@@ -20,13 +20,19 @@ def rezepte_page():
 
 @app.route('/rezept/<int:rezept_id>')
 def rezept_page(rezept_id):
+    cookie = request.cookies.get('username')
+    if not cookie:
+        return redirect(url_for('login_page'))
     qstmt = f"SELECT * FROM rezepte WHERE id = {rezept_id}"
     result = db.session.execute(text(qstmt))
     rezept = result.fetchone()
-    return render_template("rezept.html", rezept=rezept)
+    return render_template("rezept.html", rezept=rezept, cookie=cookie)
 
 @app.route('/rezept/hinzufuegen', methods=['GET', 'POST'])
 def rezept_hinzufuegen_page():
+    cookie = request.cookies.get('username')
+    if not cookie:
+        return redirect(url_for('login_page'))
     if request.method == 'POST':
         name = request.form.get('Name')
         dauer = request.form.get('Dauer')
@@ -36,7 +42,7 @@ def rezept_hinzufuegen_page():
 
         if not name or not dauer or not kalorien or not zutaten or not zubereitung:
             print("Inputs dürfen nicht leer sein")
-            return render_template("rezept_hinzufuegen.html")
+            return render_template("rezept_hinzufuegen.html", cookie=cookie)
 
         qstmt = f"INSERT INTO rezepte (name, dauer, kalorien, zutaten, zubereitung) VALUES ('{name}', '{dauer}', '{kalorien}', '{zutaten}', '{zubereitung}')"
         
@@ -47,7 +53,7 @@ def rezept_hinzufuegen_page():
         print("Rezept hinzugefügt")
         resp = redirect("/rezepte")
         return resp
-    return render_template("rezept_hinzufuegen.html")
+    return render_template("rezept_hinzufuegen.html", cookie=cookie)
 
 @app.route('/login', methods=['GET','POST'])
 def login_page():
@@ -88,15 +94,15 @@ def register_page():
 
         if username is None or isinstance(username, str) is False or len(username) < 3:
             print("Invalid username")
-            return render_template("register.html")
+            return render_template("register.html", cookie=None)
 
         if password is None or isinstance(password, str) is False or len(password) < 3:
             print("Invalid password")
-            return render_template("register.html")
+            return render_template("register.html", cookie=None)
 
         if email is None or isinstance(email, str) is False or "@" not in email:
             print("Invalid email")
-            return render_template("register.html")
+            return render_template("register.html", cookie=None)
 
         qstmt = f"INSERT INTO bugusers (username, password, email_address) VALUES ('{username}', '{password}', '{email}')"
         
@@ -107,7 +113,7 @@ def register_page():
         print("Registration successful")
         resp = redirect("/login")
         return resp
-    return render_template("register.html")
+    return render_template("register.html", cookie=None)
 
 @app.route('/logout')
 def logout():
