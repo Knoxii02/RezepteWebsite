@@ -4,15 +4,19 @@ from sqlalchemy import text
 
 @app.route('/')
 def home_page():
-    return render_template("home.html")
+    cookie = request.cookies.get('username')
+    print("<>home_page", cookie)
+    return render_template("home.html", cookie=cookie)
 
 @app.route('/rezepte')
 def rezepte_page():
+    cookie = request.cookies.get('username')
+    print("<>rezepte_page", cookie)
     qstmt = "SELECT * FROM rezepte"
     result = db.session.execute(text(qstmt))
     rezepte = result.fetchall()
     print(rezepte)
-    return render_template("rezepte.html", rezepte=rezepte)
+    return render_template("rezepte.html", rezepte=rezepte, cookie=cookie)
 
 @app.route('/rezept/<int:rezept_id>')
 def rezept_page(rezept_id):
@@ -53,11 +57,11 @@ def login_page():
         
         if username is None or isinstance(username, str) is False or len(username) < 3:
             print("Invalid username")
-            return render_template("login.html")
+            return render_template("login.html", cookie=None)
         
         if password is None or isinstance(password, str) is False or len(password) < 3:
             print("Invalid password")
-            return render_template("login.html")
+            return render_template("login.html", cookie=None)
 
         qstmt = f"SELECT * FROM bugusers WHERE username = '{username}' AND password = '{password}'"
         print(f"Executing query: {qstmt}")
@@ -66,12 +70,13 @@ def login_page():
         
         if not user:
             print("Login failed")
-            return render_template("login.html")
+            return render_template("login.html", cookie=None)
         
         print("Login successful")
         resp = redirect("/rezepte")
+        resp.set_cookie('username', username)
         return resp
-    return render_template("login.html")
+    return render_template("login.html", cookie=None)
     
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -103,3 +108,9 @@ def register_page():
         resp = redirect("/login")
         return resp
     return render_template("register.html")
+
+@app.route('/logout')
+def logout():
+    resp = redirect('/')
+    resp.set_cookie('username', '', expires=0)
+    return resp
