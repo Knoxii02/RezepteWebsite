@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}
+  Rezept hinzufügen
+{% endblock %}
+{% block content %}
+  <div class="container mt-4">
+    <h2>Rezept hinzufügen</h2>
+
+    <form method="POST" class="mt-4">
+      <div class="mb-3">
+        <label for="Name" class="form-label">Name (max 60 Zeichen)</label>
+        <input type="text" class="form-control" id="Name" name="Name" maxlength="50" required />
+      </div>
+
+      <div class="mb-3">
+        <label for="Dauer" class="form-label">Dauer (Minuten)</label>
+        <input type="number" class="form-control" id="Dauer" name="Dauer" required />
+      </div>
+
+      <div class="mb-3">
+        <label for="Kalorien" class="form-label">Kalorien</label>
+        <input type="number" class="form-control" id="Kalorien" name="Kalorien" required />
+      </div>
+
+      <div class="mb-3">
+        <label for="Zutaten" class="form-label">Zutaten (max 1024 Zeichen)</label>
+        <textarea class="form-control" id="Zutaten" name="Zutaten" rows="5" maxlength="1024" required></textarea>
+      </div>
+
+      <div class="mb-3">
+        <label for="Zubereitung" class="form-label">Zubereitung (max 1024 Zeichen)</label>
+        <textarea class="form-control" id="Zubereitung" name="Zubereitung" rows="5" maxlength="1024" required></textarea>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Rezept hinzufügen</button>
+    </form>
+  </div>
+{% endblock %}

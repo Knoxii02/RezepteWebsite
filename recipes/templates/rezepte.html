@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}
+  Rezepte
+{% endblock %}
+{% block content %}
+  <div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2>Alle Rezepte</h2>
+      <a href="/rezept/hinzufuegen" class="btn btn-primary">Rezept hinzufügen</a>
+    </div>
+
+    <div class="row">
+      {% for rezept in rezepte %}
+        <div class="col-md-4 mb-3">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">{{ rezept.name }}</h5>
+              <p class="card-text">
+                <strong>Dauer:</strong> {{ rezept.dauer }} Min<br />
+                <strong>Kalorien:</strong> {{ rezept.kalorien }} kcal
+              </p>
+              <a href="/rezept/{{ rezept.id }}" class="btn btn-primary">Zum Rezept</a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}
