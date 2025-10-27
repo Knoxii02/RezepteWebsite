@@ -3,30 +3,40 @@
   {{ rezept.name }}
 {% endblock %}
 {% block content %}
-  <div class="container mt-4">
-    <h2>{{ rezept.name }}</h2>
+  <div class="container mt-5">
+    <div class="card p-4">
+      <h2 style="font-size: 2.5rem; margin-bottom: 30px;">🍽️ {{ rezept.name }}</h2>
 
-    <div class="mt-3">
-      <p>
-        <strong>Dauer:</strong> {{ rezept.dauer }} Minuten
-      </p>
-      <p>
-        <strong>Kalorien:</strong> {{ rezept.kalorien }} kcal
-      </p>
-    </div>
+      <div class="row mb-4">
+        <div class="col-md-6">
+          <p style="font-size: 1.2rem;">
+            <strong>⏱️ Dauer:</strong> {{ rezept.dauer }} Minuten
+          </p>
+        </div>
+        <div class="col-md-6">
+          <p style="font-size: 1.2rem;">
+            <strong>🔥 Kalorien:</strong> {{ rezept.kalorien }} kcal
+          </p>
+        </div>
+      </div>
 
-    <div class="mt-4">
-      <h4>Zutaten</h4>
-      <p>{{ rezept.zutaten }}</p>
-    </div>
+      <div class="mt-4">
+        <h4 style="color: #ff6b6b; margin-bottom: 15px;">🥕 Zutaten</h4>
+        <div style="background: #fff8e7; padding: 20px; border-radius: 10px; font-size: 1.1rem;">
+          {{ rezept.zutaten }}
+        </div>
+      </div>
 
-    <div class="mt-4">
-      <h4>Zubereitung</h4>
-      <p>{{ rezept.zubereitung }}</p>
-    </div>
+      <div class="mt-4">
+        <h4 style="color: #ff6b6b; margin-bottom: 15px;">👨‍🍳 Zubereitung</h4>
+        <div style="background: #fff8e7; padding: 20px; border-radius: 10px; font-size: 1.1rem; line-height: 1.8;">
+          {{ rezept.zubereitung }}
+        </div>
+      </div>
 
-    <div class="mt-4">
-      <a href="/rezepte" class="btn btn-secondary">Zurück zu den Rezepten</a>
+      <div class="mt-5">
+        <a href="/rezepte" class="btn btn-secondary">← Zurück zu den Rezepten</a>
+      </div>
     </div>
   </div>
 {% endblock %}

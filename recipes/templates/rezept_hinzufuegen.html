@@ -3,36 +3,49 @@
   Rezept hinzufügen
 {% endblock %}
 {% block content %}
-  <div class="container mt-4">
-    <h2>Rezept hinzufügen</h2>
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="card p-4">
+          <h2 style="font-size: 2.5rem; margin-bottom: 30px; text-align: center;">➕ Neues Rezept hinzufügen</h2>
 
-    <form method="POST" class="mt-4">
-      <div class="mb-3">
-        <label for="Name" class="form-label">Name (max 60 Zeichen)</label>
-        <input type="text" class="form-control" id="Name" name="Name" maxlength="50" required />
+          <form method="POST">
+            <div class="mb-4">
+              <label for="Name" class="form-label" style="font-weight: 600; font-size: 1.1rem;">🍴 Name</label>
+              <input type="text" class="form-control" id="Name" name="Name" maxlength="50" required placeholder="z.B. Spaghetti Carbonara" />
+              <small class="text-muted">Max. 50 Zeichen</small>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6 mb-4">
+                <label for="Dauer" class="form-label" style="font-weight: 600; font-size: 1.1rem;">⏱️ Dauer (Minuten)</label>
+                <input type="number" class="form-control" id="Dauer" name="Dauer" required placeholder="z.B. 30" />
+              </div>
+
+              <div class="col-md-6 mb-4">
+                <label for="Kalorien" class="form-label" style="font-weight: 600; font-size: 1.1rem;">🔥 Kalorien</label>
+                <input type="number" class="form-control" id="Kalorien" name="Kalorien" required placeholder="z.B. 450" />
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <label for="Zutaten" class="form-label" style="font-weight: 600; font-size: 1.1rem;">🥕 Zutaten</label>
+              <textarea class="form-control" id="Zutaten" name="Zutaten" rows="5" maxlength="1024" required placeholder="z.B. 400g Spaghetti, 200g Speck, 4 Eier..."></textarea>
+              <small class="text-muted">Max. 1024 Zeichen</small>
+            </div>
+
+            <div class="mb-4">
+              <label for="Zubereitung" class="form-label" style="font-weight: 600; font-size: 1.1rem;">👨‍🍳 Zubereitung</label>
+              <textarea class="form-control" id="Zubereitung" name="Zubereitung" rows="5" maxlength="1024" required placeholder="Schritt für Schritt Anleitung..."></textarea>
+              <small class="text-muted">Max. 1024 Zeichen</small>
+            </div>
+
+            <div class="text-center mt-4">
+              <button type="submit" class="btn btn-primary btn-lg">✨ Rezept hinzufügen</button>
+            </div>
+          </form>
+        </div>
       </div>
-
-      <div class="mb-3">
-        <label for="Dauer" class="form-label">Dauer (Minuten)</label>
-        <input type="number" class="form-control" id="Dauer" name="Dauer" required />
-      </div>
-
-      <div class="mb-3">
-        <label for="Kalorien" class="form-label">Kalorien</label>
-        <input type="number" class="form-control" id="Kalorien" name="Kalorien" required />
-      </div>
-
-      <div class="mb-3">
-        <label for="Zutaten" class="form-label">Zutaten (max 1024 Zeichen)</label>
-        <textarea class="form-control" id="Zutaten" name="Zutaten" rows="5" maxlength="1024" required></textarea>
-      </div>
-
-      <div class="mb-3">
-        <label for="Zubereitung" class="form-label">Zubereitung (max 1024 Zeichen)</label>
-        <textarea class="form-control" id="Zubereitung" name="Zubereitung" rows="5" maxlength="1024" required></textarea>
-      </div>
-
-      <button type="submit" class="btn btn-primary">Rezept hinzufügen</button>
-    </form>
+    </div>
   </div>
 {% endblock %}

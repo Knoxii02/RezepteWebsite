@@ -4,23 +4,28 @@
 {% endblock %}
 
 {% block content %}
-  <div class="container mt-4">
+  <div class="container mt-5">
     <div class="row justify-content-center">
-      <div class="col-md-6">
-        <h1 class="text-center mb-4">Login</h1>
-        <form action="/login" method="post">
-          <div class="mb-3">
-            <label for="username" class="form-label">Username</label>
-            <input type="text" id="username" name="Username" class="form-control" required />
-          </div>
+      <div class="col-md-5">
+        <div class="card p-4">
+          <h1 class="text-center mb-4" style="font-size: 2.5rem;">🔑 Login</h1>
+          <form action="/login" method="post">
+            <div class="mb-4">
+              <label for="username" class="form-label" style="font-weight: 600; font-size: 1.1rem;">👤 Username</label>
+              <input type="text" id="username" name="Username" class="form-control" required placeholder="Dein Username" />
+            </div>
 
-          <div class="mb-3">
-            <label for="password" class="form-label">Password</label>
-            <input type="password" id="password" name="Password" class="form-control" required />
-          </div>
+            <div class="mb-4">
+              <label for="password" class="form-label" style="font-weight: 600; font-size: 1.1rem;">🔒 Password</label>
+              <input type="password" id="password" name="Password" class="form-control" required placeholder="Dein Passwort" />
+            </div>
 
-          <button type="submit" class="btn btn-primary w-100">LOGIN</button>
-        </form>
+            <button type="submit" class="btn btn-primary w-100 btn-lg">LOGIN →</button>
+          </form>
+          <div class="text-center mt-3">
+            <small class="text-muted">Noch kein Account? <a href="{{ url_for('register_page') }}" style="color: #ff6b6b;">Jetzt registrieren</a></small>
+          </div>
+        </div>
       </div>
     </div>
   </div>
