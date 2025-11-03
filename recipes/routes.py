@@ -18,7 +18,7 @@ def rezepte_page():
     print(rezepte)
     return render_template("rezepte.html", rezepte=rezepte, cookie=cookie)
 
-@app.route('/rezept/<int:rezept_id>')
+@app.route('/rezept/<rezept_id>')
 def rezept_page(rezept_id):
     cookie = request.cookies.get('username')
     if not cookie:
