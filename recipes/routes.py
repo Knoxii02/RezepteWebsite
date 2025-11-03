@@ -12,10 +12,18 @@ def home_page():
 def rezepte_page():
     cookie = request.cookies.get('username')
     print("<>rezepte_page", cookie)
-    qstmt = "SELECT * FROM rezepte"
+    
+    search = request.args.get('search', '')
+    
+    if search:
+        qstmt = f"SELECT * FROM rezepte WHERE name LIKE '{search}'"
+        print(f"Search query: {qstmt}")
+    else:
+        qstmt = "SELECT * FROM rezepte"
+    
     result = db.session.execute(text(qstmt))
     rezepte = result.fetchall()
-    print(rezepte)
+    print(f"Found {len(rezepte)} rezepte")
     return render_template("rezepte.html", rezepte=rezepte, cookie=cookie)
 
 @app.route('/rezept/<rezept_id>')

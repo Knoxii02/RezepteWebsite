@@ -4,9 +4,19 @@
 {% endblock %}
 {% block content %}
   <div class="container mt-5">
-    <div class="d-flex justify-content-between align-items-center mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
       <h2 style="font-size: 2.5rem;">📚 Alle Rezepte</h2>
       <a href="/rezept/hinzufuegen" class="btn btn-primary">➕ Rezept hinzufügen</a>
+    </div>
+
+    <!-- Search Box -->
+    <div class="row mb-4">
+      <div class="col-md-8 mx-auto">
+        <form method="GET" action="/rezepte" class="d-flex">
+          <input type="text" name="search" class="form-control me-2" placeholder="🔍 Rezept suchen..." value="{{ request.args.get('search', '') }}" style="border: 2px solid #ff6b6b;" />
+          <button type="submit" class="btn btn-primary" style="white-space: nowrap;">Suchen</button>
+        </form>
+      </div>
     </div>
 
     <div class="row">
