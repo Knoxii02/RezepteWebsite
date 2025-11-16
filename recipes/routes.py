@@ -1,4 +1,4 @@
-from recipes import app, db
+from recipes import app, db, limiter
 from flask import render_template, request, redirect, url_for
 from sqlalchemy import text
 
@@ -16,12 +16,12 @@ def rezepte_page():
     search = request.args.get('search', '')
     
     if search:
-        qstmt = f"SELECT * FROM rezepte WHERE name LIKE '{search}'"
-        print(f"Search query: {qstmt}")
+        qstmt = text("SELECT * FROM rezepte WHERE name LIKE :search")
+        print(f"Search query with param: {search}")
+        result = db.session.execute(qstmt, {"search": search})
     else:
-        qstmt = "SELECT * FROM rezepte"
+        result = db.session.execute(text("SELECT * FROM rezepte"))
     
-    result = db.session.execute(text(qstmt))
     rezepte = result.fetchall()
     print(f"Found {len(rezepte)} rezepte")
     return render_template("rezepte.html", rezepte=rezepte, cookie=cookie)
@@ -31,8 +31,8 @@ def rezept_page(rezept_id):
     cookie = request.cookies.get('username')
     if not cookie:
         return redirect(url_for('login_page'))
-    qstmt = f"SELECT * FROM rezepte WHERE id = {rezept_id}"
-    result = db.session.execute(text(qstmt))
+    qstmt = text("SELECT * FROM rezepte WHERE id = :id")
+    result = db.session.execute(qstmt, {"id": rezept_id})
     rezept = result.fetchone()
     return render_template("rezept.html", rezept=rezept, cookie=cookie)
 
@@ -52,10 +52,10 @@ def rezept_hinzufuegen_page():
             print("Inputs dürfen nicht leer sein")
             return render_template("rezept_hinzufuegen.html", cookie=cookie)
 
-        qstmt = f"INSERT INTO rezepte (name, dauer, kalorien, zutaten, zubereitung) VALUES ('{name}', '{dauer}', '{kalorien}', '{zutaten}', '{zubereitung}')"
+        qstmt = text("INSERT INTO rezepte (name, dauer, kalorien, zutaten, zubereitung) VALUES (:name, :dauer, :kalorien, :zutaten, :zubereitung)")
         
-        print(f"Executing query: {qstmt}")
-        db.session.execute(text(qstmt))
+        print(f"Executing query with params: name={name}, dauer={dauer}")
+        db.session.execute(qstmt, {"name": name, "dauer": dauer, "kalorien": kalorien, "zutaten": zutaten, "zubereitung": zubereitung})
         db.session.commit()
 
         print("Rezept hinzugefügt")
@@ -64,6 +64,7 @@ def rezept_hinzufuegen_page():
     return render_template("rezept_hinzufuegen.html", cookie=cookie)
 
 @app.route('/login', methods=['GET','POST'])
+@limiter.limit("5 per minute")  # Maximal 5 Login-Versuche pro Minute
 def login_page():
     if request.method == 'POST':
         username = request.form.get('Username')
@@ -77,9 +78,9 @@ def login_page():
             print("Invalid password")
             return render_template("login.html", cookie=None)
 
-        qstmt = f"SELECT * FROM bugusers WHERE username = '{username}' AND password = '{password}'"
-        print(f"Executing query: {qstmt}")
-        result = db.session.execute(text(qstmt))
+        qstmt = text("SELECT * FROM bugusers WHERE username = :username AND password = :password")
+        print(f"Executing query with params: username={username}")
+        result = db.session.execute(qstmt, {"username": username, "password": password})
         user = result.fetchall()
         
         if not user:
@@ -94,6 +95,7 @@ def login_page():
     
 
 @app.route('/register', methods=['GET', 'POST'])
+@limiter.limit("3 per hour")  # Maximal 3 Registrierungen pro Stunde
 def register_page():
     if request.method == 'POST':
         username = request.form.get('Username')
@@ -112,10 +114,10 @@ def register_page():
             print("Invalid email")
             return render_template("register.html", cookie=None)
 
-        qstmt = f"INSERT INTO bugusers (username, password, email_address) VALUES ('{username}', '{password}', '{email}')"
+        qstmt = text("INSERT INTO bugusers (username, password, email_address) VALUES (:username, :password, :email)")
         
-        print(f"Executing query: {qstmt}")
-        db.session.execute(text(qstmt))
+        print(f"Executing query with params: username={username}, email={email}")
+        db.session.execute(qstmt, {"username": username, "password": password, "email": email})
         db.session.commit()
 
         print("Registration successful")
