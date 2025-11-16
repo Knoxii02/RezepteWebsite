@@ -64,7 +64,7 @@ def rezept_hinzufuegen_page():
     return render_template("rezept_hinzufuegen.html", cookie=cookie)
 
 @app.route('/login', methods=['GET','POST'])
-@limiter.limit("5 per minute")  # Maximal 5 Login-Versuche pro Minute
+@limiter.limit("5 per minute")
 def login_page():
     if request.method == 'POST':
         username = request.form.get('Username')
@@ -95,7 +95,7 @@ def login_page():
     
 
 @app.route('/register', methods=['GET', 'POST'])
-@limiter.limit("3 per hour")  # Maximal 3 Registrierungen pro Stunde
+@limiter.limit("3 per hour")
 def register_page():
     if request.method == 'POST':
         username = request.form.get('Username')
