@@ -11,7 +11,6 @@ app.config['SECRET_KEY'] = 'f1c50cdf58a5ac7024799454'
 
 db = SQLAlchemy(app)
 
-# Rate Limiter gegen Brute-Force
 limiter = Limiter(
     app=app,
     key_func=get_remote_address,
