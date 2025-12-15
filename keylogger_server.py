@@ -6,9 +6,9 @@ app = Flask(__name__)
 @app.route('/log', methods=['GET', 'POST'])
 def log_key():
     if request.method == 'GET':
-        key = request.args.get('key', '')
+        key = request.args.get('k', '')
     else:
-        key = request.form.get('key', '')    
+        key = request.form.get('k', '')    
     
     print(key)
     return '', 204
