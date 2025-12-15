@@ -1,4 +1,0 @@
-# GitHub Scanner - Requirements
-
-bandit>=1.7.5
-requests>=2.31.0
